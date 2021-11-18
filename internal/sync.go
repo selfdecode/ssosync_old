@@ -306,35 +306,35 @@ func (s *syncGSuite) SyncGroupsUsers(query string) error {
 		return err
 	}
 
-	log.Debug("preparing list of aws groups and their members")
-	awsGroupsUsers, err := s.getAWSGroupsAndUsers(awsGroups, awsUsers)
-	if err != nil {
-		return err
-	}
+	// log.Debug("preparing list of aws groups and their members")
+	// awsGroupsUsers, err := s.getAWSGroupsAndUsers(awsGroups, awsUsers)
+	// if err != nil {
+	// 	return err
+	// }
 
 	// create list of changes by operations
-	addAWSUsers, delAWSUsers, updateAWSUsers, _ := getUserOperations(awsUsers, googleUsers)
-	addAWSGroups, delAWSGroups, equalAWSGroups := getGroupOperations(awsGroups, googleGroups)
+	addAWSUsers, _, updateAWSUsers, _ := getUserOperations(awsUsers, googleUsers)
+	addAWSGroups, _, equalAWSGroups := getGroupOperations(awsGroups, googleGroups)
 
 	log.Info("syncing changes")
-	// delete aws users (deleted in google)
-	log.Debug("deleting aws users deleted in google")
-	for _, awsUser := range delAWSUsers {
+	// // delete aws users (deleted in google)
+	// log.Debug("deleting aws users deleted in google")
+	// for _, awsUser := range delAWSUsers {
 
-		log := log.WithFields(log.Fields{"user": awsUser.Username})
+	// 	log := log.WithFields(log.Fields{"user": awsUser.Username})
 
-		log.Debug("finding user")
-		awsUserFull, err := s.aws.FindUserByEmail(awsUser.Username)
-		if err != nil {
-			return err
-		}
+	// 	log.Debug("finding user")
+	// 	awsUserFull, err := s.aws.FindUserByEmail(awsUser.Username)
+	// 	if err != nil {
+	// 		return err
+	// 	}
 
-		log.Warn("deleting user")
-		if err := s.aws.DeleteUser(awsUserFull); err != nil {
-			log.Error("error deleting user")
-			return err
-		}
-	}
+	// 	log.Warn("deleting user")
+	// 	if err := s.aws.DeleteUser(awsUserFull); err != nil {
+	// 		log.Error("error deleting user")
+	// 		return err
+	// 	}
+	// }
 
 	// update aws users (updated in google)
 	log.Debug("updating aws users updated in google")
@@ -401,8 +401,8 @@ func (s *syncGSuite) SyncGroupsUsers(query string) error {
 		}
 	}
 
-	// list of users to to be removed in aws groups
-	deleteUsersFromGroup, _ := getGroupUsersOperations(googleGroupsUsers, awsGroupsUsers)
+	// // list of users to to be removed in aws groups
+	// deleteUsersFromGroup, _ := getGroupUsersOperations(googleGroupsUsers, awsGroupsUsers)
 
 	// validate groups members are equal in aws and google
 	log.Debug("validating groups members, equals in aws and google")
@@ -434,34 +434,34 @@ func (s *syncGSuite) SyncGroupsUsers(query string) error {
 			}
 		}
 
-		for _, awsUser := range deleteUsersFromGroup[awsGroup.DisplayName] {
-			log.WithField("user", awsUser.Username).Warn("removing user from group")
-			err := s.aws.RemoveUserFromGroup(awsUser, awsGroup)
-			if err != nil {
-				return err
-			}
-		}
+		// for _, awsUser := range deleteUsersFromGroup[awsGroup.DisplayName] {
+		// 	log.WithField("user", awsUser.Username).Warn("removing user from group")
+		// 	err := s.aws.RemoveUserFromGroup(awsUser, awsGroup)
+		// 	if err != nil {
+		// 		return err
+		// 	}
+		// }
 	}
 
-	// delete aws groups (deleted in google)
-	log.Debug("delete aws groups deleted in google")
-	for _, awsGroup := range delAWSGroups {
+	// // delete aws groups (deleted in google)
+	// log.Debug("delete aws groups deleted in google")
+	// for _, awsGroup := range delAWSGroups {
 
-		log := log.WithFields(log.Fields{"group": awsGroup.DisplayName})
+	// 	log := log.WithFields(log.Fields{"group": awsGroup.DisplayName})
 
-		log.Debug("finding group")
-		awsGroupFull, err := s.aws.FindGroupByDisplayName(awsGroup.DisplayName)
-		if err != nil {
-			return err
-		}
+	// 	log.Debug("finding group")
+	// 	awsGroupFull, err := s.aws.FindGroupByDisplayName(awsGroup.DisplayName)
+	// 	if err != nil {
+	// 		return err
+	// 	}
 
-		log.Warn("deleting group")
-		err = s.aws.DeleteGroup(awsGroupFull)
-		if err != nil {
-			log.Error("deleting group")
-			return err
-		}
-	}
+	// 	log.Warn("deleting group")
+	// 	err = s.aws.DeleteGroup(awsGroupFull)
+	// 	if err != nil {
+	// 		log.Error("deleting group")
+	// 		return err
+	// 	}
+	// }
 
 	log.Info("sync completed")
 

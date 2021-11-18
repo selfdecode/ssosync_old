@@ -24,9 +24,13 @@ packaged.yaml
 # IDE
 .idea/
 .vscode/
+.venv
 
 # SAM
 .aws-sam/
 
 # Local binary
 ssosync
+
+# Local credentials
+credentials.json

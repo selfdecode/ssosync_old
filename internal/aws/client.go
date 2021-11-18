@@ -556,6 +556,10 @@ func (c *client) GetUsers() ([]*User, error) {
 	if err != nil {
 		return nil, err
 	}
+	log.Info("AWS len(r.Resources): ", len(r.Resources))
+	log.Info("AWS len(r.TotalResults): ", r.TotalResults)
+	log.Info("AWS len(r.ItemsPerPage): ", r.ItemsPerPage)
+	log.Info("AWS len(r.StartIndex): ", r.StartIndex)
 
 	// if r.TotalResults != 1 {
 	// 	return nil, ErrUserNotFound
@@ -564,6 +568,7 @@ func (c *client) GetUsers() ([]*User, error) {
 	usrs := make([]*User, len(r.Resources))
 	for i := range r.Resources {
 		usrs[i] = &r.Resources[i]
+		log.Info("AWS usrs[i].Emails: ", usrs[i].Emails)
 	}
 
 	return usrs, nil
