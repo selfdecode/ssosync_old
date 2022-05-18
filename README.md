@@ -1,4 +1,15 @@
-# SSO Sync
+# SSO Sync - SelfDecode Fork
+
+## SelfDecode Usage
+Nested groups break the sync, and we have nested groups in our Google Workspace.
+You will need to install and use direnv or specifically exclude the groups
+in /.envrc item SSOSYNC_IGNORE_GROUPS
+If a new nested group is created, it will need to be identified and added to this
+list. 
+
+
+Forked from [SSO Sync](https://github.com/awslabs/ssosync)
+
 
 ![Github Action](https://github.com/awslabs/ssosync/workflows/main/badge.svg)
 <a href='https://github.com/jpoles1/gopherbadger' target='_blank'>![gopherbadger-tag-do-not-edit](https://img.shields.io/badge/Go%20Coverage-42%25-brightgreen.svg?longCache=true&style=flat)</a>
