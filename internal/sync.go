@@ -520,7 +520,7 @@ func (s *syncGSuite) getGoogleGroupsAndUsers(googleGroups []*admin.Group) ([]*ad
 			if err != nil {
 				return nil, nil, err
 			}
-			if len(membersUsers) == 0 {
+			if len(u) == 0 {
 				continue
 			}
 			membersUsers = append(membersUsers, u[0])
